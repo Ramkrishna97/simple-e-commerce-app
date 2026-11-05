@@ -1,6 +1,10 @@
 server:
   port: 8083
 spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
   datasource:
     url: jdbc:h2:file:./data/productdb;AUTO_SERVER=TRUE
   jpa:
@@ -10,5 +14,6 @@ spring:
     console:
       enabled: true
 app:
+  storage-limit-bytes: ${STORAGE_LIMIT_BYTES:536870912}
   jwt-secret: change-this-demo-secret-to-a-long-random-value-at-least-32-bytes
   internal-api-key: local-order-service-key-change-in-production
