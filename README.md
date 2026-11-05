@@ -37,4 +37,13 @@ This project includes a [netlify.toml](file:///E:/Temp/Ai-playground/simple-e-ma
 5. Click **Deploy site**.
 
 > [!NOTE]
-> Because the backend consists of Spring Boot microservices (Auth, User, Product, Cart, Order, Notification services), they need to be hosted separately (e.g., Render, Railway, AWS, or Fly.io) if you want the deployed Netlify frontend to connect to production APIs instead of `localhost`.
+> **Netlify Free Tier Limitation & Backend Hosting:**
+> Netlify Free Tier hosts static frontends and serverless Node functions only — it cannot run Java/Spring Boot JARs or Gradle background processes.
+> 
+> The Angular app dynamically resolves API URLs:
+> - **Local Development:** Routes to `http://localhost:808x` via `proxy.conf.json`.
+> - **Deployed Host (Netlify):** Routes requests relatively via `/api/*`.
+> 
+> To connect your Netlify frontend to live backends for free:
+> 1. Host your Spring Boot JARs or Docker containers on a free backend platform (such as [Render Free Tier](https://render.com/), [Railway](https://railway.app/), or [Koyeb](https://www.koyeb.com/)).
+> 2. Uncomment and update the `[[redirects]]` section in `netlify.toml` to proxy `/api/*` routes to your free backend URL.
