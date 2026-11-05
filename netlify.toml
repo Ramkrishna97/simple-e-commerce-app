@@ -3,6 +3,52 @@
   command = "npm run build"
   publish = "dist/frontend/browser"
 
+# ==============================================================================
+# Netlify Free Tier API Redirects
+# ------------------------------------------------------------------------------
+# Netlify Free Tier hosts the static Angular app.
+# If you deploy your backend Java Spring Boot services to a free backend host
+# (such as Render Free Tier, Railway, Koyeb, or Fly.io), uncomment and update
+# the proxy redirects below with your backend URL.
+# ==============================================================================
+
+# [[redirects]]
+#   from = "/api/auth/*"
+#   to = "https://your-free-backend.onrender.com/api/auth/:splat"
+#   status = 200
+#   force = true
+
+# [[redirects]]
+#   from = "/api/users/*"
+#   to = "https://your-free-backend.onrender.com/api/users/:splat"
+#   status = 200
+#   force = true
+
+# [[redirects]]
+#   from = "/api/products/*"
+#   to = "https://your-free-backend.onrender.com/api/products/:splat"
+#   status = 200
+#   force = true
+
+# [[redirects]]
+#   from = "/api/carts/*"
+#   to = "https://your-free-backend.onrender.com/api/carts/:splat"
+#   status = 200
+#   force = true
+
+# [[redirects]]
+#   from = "/api/orders/*"
+#   to = "https://your-free-backend.onrender.com/api/orders/:splat"
+#   status = 200
+#   force = true
+
+# [[redirects]]
+#   from = "/api/notifications/*"
+#   to = "https://your-free-backend.onrender.com/api/notifications/:splat"
+#   status = 200
+#   force = true
+
+# SPA Single Page App Route Fallback
 [[redirects]]
   from = "/*"
   to = "/index.html"
