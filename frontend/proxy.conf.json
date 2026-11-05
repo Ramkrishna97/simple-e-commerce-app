@@ -1,0 +1,30 @@
+{
+  "/api/auth": {
+    "target": "http://localhost:8081",
+    "secure": false
+  },
+  "/api/users": {
+    "target": "http://localhost:8082",
+    "secure": false
+  },
+  "/api/products": {
+    "target": "http://localhost:8083",
+    "secure": false
+  },
+  "/api/sellers": {
+    "target": "http://localhost:8083",
+    "secure": false
+  },
+  "/api/carts": {
+    "target": "http://localhost:8084",
+    "secure": false
+  },
+  "/api/orders": {
+    "target": "http://localhost:8085",
+    "secure": false
+  },
+  "/api/notifications": {
+    "target": "http://localhost:8086",
+    "secure": false
+  }
+}
