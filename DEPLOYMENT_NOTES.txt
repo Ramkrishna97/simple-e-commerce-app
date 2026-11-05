@@ -1,0 +1,80 @@
+DEPLOYMENT NOTES: NETLIFY FRONTEND + RENDER SPRING BOOT BACKEND
+================================================================
+
+WHAT WAS WRONG
+--------------
+1. Render was running multiple Spring Boot JVMs plus embedded Kafka in a
+   512 MB free-tier container. The configured Java heap limits did not include
+   metaspace, threads, native memory, database buffers, Kafka, or Nginx. The
+   services therefore competed for memory and could fail or restart.
+
+2. Nginx started before Spring Boot had finished starting. Render saw Nginx
+   listening on port 10000 and marked the service live, but Nginx returned 502
+   while the backend port (8080) was still closed. This is a normal cold-start
+   race unless readiness is handled explicitly.
+
+3. The Angular app used relative requests such as /api/products. In production
+   those requests went to Netlify, not Render. The Netlify redirect was not
+   reliably applied, so the SPA fallback returned index.html with HTTP 200.
+   Angular then tried to parse HTML as JSON and reported that the API proxy
+   returned the frontend page.
+
+4. The frontend treated every request failure like a backend cold start. This
+   hid routing/configuration problems and caused unnecessary long retries.
+
+WHAT FIXED IT
+-------------
+1. Consolidated the production backend into one Marketplace Spring Boot JVM.
+2. Removed embedded Kafka from the free-tier runtime; notifications are handled
+   synchronously through the database-backed implementation.
+3. Kept Nginx as the public listener on port 10000 and proxied /api/* internally
+   to the single Spring process on 127.0.0.1:8080.
+4. Applied conservative JVM and connection-pool limits, including a small heap,
+   Hikari pool, and bounded native/runtime settings.
+5. Made production Angular requests call the Render origin directly:
+   https://simple-e-commerce-app.onrender.com
+   Local development still uses localhost service ports.
+6. Added CORS for the Netlify origin and kept bounded retries only for 0, 502,
+   503, and 504 responses. HTML responses and other errors now show a useful
+   configuration/backend message instead of pretending to be a cold start.
+7. Verified the deployed Render product endpoint returns JSON and the Netlify
+   build contains the Render API origin.
+
+REUSABLE DEPLOYMENT CHECKLIST
+-----------------------------
+Backend / Render:
+- Prefer one JVM on a small free-tier container; combine modules if necessary.
+- Disable heavyweight infrastructure (for example embedded Kafka) unless it is
+  essential and the container has enough memory.
+- Bind the public process to Render's PORT (normally 10000).
+- Proxy API routes to an internal backend port such as 8080.
+- Configure an explicit readiness/health endpoint and do not confuse “Nginx is
+  listening” with “the application is ready”.
+- Keep heap, database pool, thread counts, and native memory bounded.
+- Log the backend startup completion line and fail the container if the process
+  exits.
+
+Frontend / Netlify:
+- Set a production API origin explicitly; never assume /api points to Render.
+- Use relative URLs only when the frontend host intentionally proxies the API.
+- Configure CORS for the exact frontend origin (including https).
+- If using Netlify redirects, place API rules before the SPA catch-all rule and
+  verify the deployed site, not only the local build output.
+- Ensure API failures returning HTML are detected and reported clearly.
+- Retry only transient gateway/startup statuses, with a finite timeout.
+
+Verification after every deployment:
+1. GET Render /health and /api/products?page=0; confirm JSON and HTTP 200.
+2. Open the Netlify site and inspect the browser Network tab.
+3. Confirm API requests target the Render hostname, not Netlify's /api path.
+4. Test CORS with the Netlify Origin header.
+5. Test login, cart creation, checkout, and one protected endpoint.
+6. Check Render logs for OOM, repeated restarts, connection-refused 502s, and
+   the final Spring “started/ready” message.
+
+KEY LESSON
+----------
+A deployment can be “live” at the platform level while the application is not
+ready, and a frontend can receive a successful HTTP 200 containing the wrong
+content. Always verify destination host, content type, readiness, CORS, and
+resource usage separately.
