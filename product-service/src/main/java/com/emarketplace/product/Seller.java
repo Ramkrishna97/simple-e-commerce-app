@@ -8,5 +8,6 @@ import java.util.List;
     @ElementCollection private List<String> listedProductIds = new ArrayList<>();
     protected Seller() {} public Seller(String name,String username,String email,String mobileNumber) { this.name=name;this.username=username;this.email=email;this.mobileNumber=mobileNumber; }
     public String getId(){return id;} public String getName(){return name;} public String getUsername(){return username;} public String getEmail(){return email;} public String getMobileNumber(){return mobileNumber;} public List<String> getListedProductIds(){return listedProductIds;} public void addProduct(String productId) { listedProductIds.add(productId); }
+    public void removeProduct(String productId){listedProductIds.remove(productId);}
     public void update(String name,String email,String mobileNumber){this.name=name;this.email=email;this.mobileNumber=mobileNumber;}
 }
