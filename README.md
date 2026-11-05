@@ -59,7 +59,7 @@ This project is configured to run 100% on free tiers:
 ### Step 2: Deploy Frontend to Netlify (Free Tier)
 1. In [netlify.toml](file:///E:/Temp/Ai-playground/simple-e-marketplace/netlify.toml), update the `to` URLs under `[[redirects]]` if your Render app name is different from `simple-e-marketplace-backend`.
 2. Log in to [Netlify](https://app.netlify.com/) and import your repository.
-3. Netlify will build the Angular site and automatically proxy all `/api/*` traffic seamlessly to your Render backend.
+3. Netlify will build the Angular site. Production browser requests call the Render backend directly; Nginx allows the configured Netlify origin through CORS. The redirect rules remain as a fallback.
 
 > [!TIP]
 > **Low-Memory Optimization:**

@@ -14,6 +14,7 @@ interface Notification { id:string; senderUsername:string; recipientUsername:str
 
 @Component({selector:'app-root',imports:[CommonModule,CurrencyPipe,FormsModule],templateUrl:'./app.html',styleUrl:'./app.css'})
 export class App implements OnInit {
+  private readonly productionApiOrigin='https://simple-e-commerce-app.onrender.com';
   products:Product[]=[]; page=0; totalPages=0; view:'grid'|'list'='grid'; loading=true; error='';
   serverWakingUp=false; retryCount=0;
   private readonly maxWakeRetries=20;
@@ -34,7 +35,7 @@ export class App implements OnInit {
 
   private serviceUrl(port: string, path: string): string {
     if (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-      return path;
+      return `${this.productionApiOrigin}${path}`;
     }
     return `http://localhost:${port}${path}`;
   }
