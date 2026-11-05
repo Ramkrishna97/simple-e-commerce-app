@@ -6,8 +6,8 @@
       <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
       <h3 class="h5 mt-3 fw-bold">{{ serverWakingUp ? 'Waking up backend microservices…' : 'Loading catalog…' }}</h3>
       <p *ngIf="serverWakingUp" class="text-muted small mt-2">
-        Render Free Tier puts inactive containers to sleep. Starting the Spring Boot backend takes ~20–30s on cold start.<br>
-        <span class="badge text-bg-light text-primary border mt-2">Connecting to backend (attempt #{{ retryCount }})…</span>
+        Render Free Tier puts inactive containers to sleep. The optimized backend may need a moment on a cold start.<br>
+        <span class="badge text-bg-light text-primary border mt-2">Connecting to backend (attempt #{{ retryCount }} of 20)…</span>
       </p>
     </div>
     <div *ngIf="error && !loading" class="alert alert-info">{{ error }}</div>

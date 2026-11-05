@@ -1,7 +1,7 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
 interface Product { id:string; name:string; description:string; category:string; images:string[]; reviews:string[]; discount:number; mrpPrice:number; discountedPrice:number; availableQuantity:number; sellerUsername:string; }
 interface ProductPage { content:Product[]; number:number; totalPages:number; }
@@ -16,6 +16,7 @@ interface Notification { id:string; senderUsername:string; recipientUsername:str
 export class App implements OnInit {
   products:Product[]=[]; page=0; totalPages=0; view:'grid'|'list'='grid'; loading=true; error='';
   serverWakingUp=false; retryCount=0;
+  private readonly maxWakeRetries=20;
   username=sessionStorage.getItem('username')||''; password=''; token=sessionStorage.getItem('token')||''; role=sessionStorage.getItem('role')||''; loginError='';
   showLogin=false; showRegistration=false; showCart=false; showOrders=false; showAccount=false; showNotifications=false;
   cartItems:CartItem[]=[]; orders:Order[]=[]; cartLoading=false; ordering=false; orderError=''; guestCartId=this.getOrCreateGuestCartId();
@@ -40,7 +41,8 @@ export class App implements OnInit {
 
   constructor(private readonly http:HttpClient,private readonly changes:ChangeDetectorRef){}
   ngOnInit():void{this.loadProducts();this.loadCart();if(this.token){this.loadOrders();this.loadNotifications();}}
-  loadProducts(page=this.page):void{
+  loadProducts(page=this.page,isRetry=false):void{
+    if(!isRetry){this.retryCount=0;this.error='';}
     this.loading=true;
     this.http.get<ProductPage>(`${this.productUrl}/products?page=${page}`).subscribe({
       next:r=>{
@@ -53,12 +55,24 @@ export class App implements OnInit {
         this.retryCount=0;
         this.changes.detectChanges();
       },
-      error:()=>{
-        this.retryCount++;
-        this.serverWakingUp=true;
-        this.loading=true;
+      error:(failure:HttpErrorResponse)=>{
+        const retryable=[0,502,503,504].includes(failure.status);
+        if(retryable&&this.retryCount<this.maxWakeRetries){
+          this.retryCount++;
+          this.serverWakingUp=true;
+          this.loading=true;
+          this.changes.detectChanges();
+          setTimeout(()=>this.loadProducts(page,true),4000);
+          return;
+        }
+        this.serverWakingUp=false;
+        this.loading=false;
+        this.error=failure.status===200
+          ?'The API proxy returned the frontend page instead of product data. Redeploy the Netlify redirects.'
+          :retryable
+            ?'The backend did not become ready. Check the latest Render service logs.'
+            :`The catalog request failed (HTTP ${failure.status||'network error'}).`;
         this.changes.detectChanges();
-        setTimeout(()=>this.loadProducts(page),4000);
       }
     });
   }

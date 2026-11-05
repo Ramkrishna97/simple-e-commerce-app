@@ -1,2 +1,2 @@
 rootProject.name = 'simple-e-marketplace'
-include 'auth-service', 'user-service', 'product-service', 'cart-service', 'order-service', 'notification-service'
+include 'auth-service', 'user-service', 'product-service', 'cart-service', 'order-service', 'notification-service', 'marketplace-service'

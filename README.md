@@ -44,7 +44,7 @@ The unified backend will start on port `8080`, exposing all microservice routes:
 
 This project is configured to run 100% on free tiers:
 - **Frontend:** Angular app deployed on **Netlify Free Tier**
-- **Backend:** All 6 Spring Boot microservices + Nginx reverse proxy bundled into a single low-memory Docker container deployed on **Render Free Tier (512 MB RAM)**.
+- **Backend:** The six local service modules are compiled into one low-memory Spring Boot production process behind Nginx and deployed on **Render Free Tier (512 MB RAM)**. This preserves the API routes without paying the native-memory cost of six JVMs.
 
 ---
 
@@ -63,4 +63,4 @@ This project is configured to run 100% on free tiers:
 
 > [!TIP]
 > **Low-Memory Optimization:**
-> Each Java Spring Boot microservice is launched in Docker with optimized JVM flags (`-Xmx64m -XX:+UseSerialGC -Xss256k -XX:TieredStopAtLevel=1`), using only ~350–400 MB RAM total. This ensures the backend runs cleanly within Render's 512 MB Free Tier limit without memory errors.
+> Render runs `marketplace-service` with a 256 MB heap, bounded code cache/direct memory, one database pool, and one Tomcat server. Notifications are written synchronously in this free-tier bundle instead of starting an embedded Kafka broker. Local development can still run the six modules independently.
