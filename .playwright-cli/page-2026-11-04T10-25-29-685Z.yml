@@ -1,0 +1,114 @@
+- main [ref=f2e3]:
+  - navigation [ref=f2e4]:
+    - generic [ref=f2e5]: marketlane
+    - generic [ref=f2e6]:
+      - generic [ref=f2e7]: Shop smarter, locally.
+      - button "Log in" [ref=f2e8] [cursor=pointer]: ⌾
+  - generic [ref=f2e9]:
+    - paragraph [ref=f2e10]: Curated for you
+    - generic [ref=f2e11]:
+      - generic [ref=f2e12]:
+        - heading "Everyday finds, beautifully simple." [level=1] [ref=f2e13]
+        - paragraph [ref=f2e14]: Browse the local marketplace and save favorites to your account.
+      - button "Explore products" [ref=f2e16] [cursor=pointer]
+  - generic [ref=f2e17]:
+    - generic [ref=f2e18]:
+      - generic [ref=f2e19]:
+        - heading "Discover products" [level=2] [ref=f2e20]
+        - text: 8 results on this page · 20 per page
+      - generic [ref=f2e21]:
+        - button "▦ Tiles" [ref=f2e22] [cursor=pointer]
+        - button "☷ List" [ref=f2e23] [cursor=pointer]
+    - generic [ref=f2e24]:
+      - article [ref=f2e26]:
+        - generic [ref=f2e27]: Electronics
+        - generic [ref=f2e28]:
+          - generic [ref=f2e29]: Electronics
+          - heading "Everyday Wireless Headphones" [level=3] [ref=f2e30]
+          - paragraph [ref=f2e31]: Comfortable over-ear headphones with clear sound and long battery life.
+          - generic [ref=f2e32]:
+            - generic [ref=f2e33]:
+              - strong [ref=f2e34]: ₹1,799.00
+              - deletion [ref=f2e35]: ₹2,499.00
+            - button "Add" [ref=f2e36] [cursor=pointer]
+      - article [ref=f2e38]:
+        - generic [ref=f2e39]: Home
+        - generic [ref=f2e40]:
+          - generic [ref=f2e41]: Home
+          - heading "Minimal Desk Lamp" [level=3] [ref=f2e42]
+          - paragraph [ref=f2e43]: A warm, adjustable desk light for focused work and relaxed evenings.
+          - generic [ref=f2e44]:
+            - generic [ref=f2e45]:
+              - strong [ref=f2e46]: ₹1,299.00
+              - deletion [ref=f2e47]: ₹1,899.00
+            - button "Add" [ref=f2e48] [cursor=pointer]
+      - article [ref=f2e50]:
+        - generic [ref=f2e51]: Fashion
+        - generic [ref=f2e52]:
+          - generic [ref=f2e53]: Fashion
+          - heading "Classic Canvas Backpack" [level=3] [ref=f2e54]
+          - paragraph [ref=f2e55]: A durable everyday backpack with a padded laptop compartment.
+          - generic [ref=f2e56]:
+            - generic [ref=f2e57]:
+              - strong [ref=f2e58]: ₹1,499.00
+              - deletion [ref=f2e59]: ₹2,199.00
+            - button "Add" [ref=f2e60] [cursor=pointer]
+      - article [ref=f2e62]:
+        - generic [ref=f2e63]: Lifestyle
+        - generic [ref=f2e64]:
+          - generic [ref=f2e65]: Lifestyle
+          - heading "Stainless Steel Bottle" [level=3] [ref=f2e66]
+          - paragraph [ref=f2e67]: Double-wall insulated bottle that keeps drinks cold throughout the day.
+          - generic [ref=f2e68]:
+            - generic [ref=f2e69]:
+              - strong [ref=f2e70]: ₹699.00
+              - deletion [ref=f2e71]: ₹999.00
+            - button "Add" [ref=f2e72] [cursor=pointer]
+      - article [ref=f2e74]:
+        - generic [ref=f2e75]: Electronics
+        - generic [ref=f2e76]:
+          - generic [ref=f2e77]: Electronics
+          - heading "Smart Fitness Band" [level=3] [ref=f2e78]
+          - paragraph [ref=f2e79]: Track steps, sleep, heart rate, and everyday activity from your wrist.
+          - generic [ref=f2e80]:
+            - generic [ref=f2e81]:
+              - strong [ref=f2e82]: ₹2,499.00
+              - deletion [ref=f2e83]: ₹3,499.00
+            - button "Add" [ref=f2e84] [cursor=pointer]
+      - article [ref=f2e86]:
+        - generic [ref=f2e87]: Home
+        - generic [ref=f2e88]:
+          - generic [ref=f2e89]: Home
+          - heading "Organic Cotton Throw" [level=3] [ref=f2e90]
+          - paragraph [ref=f2e91]: A soft textured throw made for sofas, reading corners, and cool nights.
+          - generic [ref=f2e92]:
+            - generic [ref=f2e93]:
+              - strong [ref=f2e94]: ₹1,099.00
+              - deletion [ref=f2e95]: ₹1,599.00
+            - button "Add" [ref=f2e96] [cursor=pointer]
+      - article [ref=f2e98]:
+        - generic [ref=f2e99]: Fashion
+        - generic [ref=f2e100]:
+          - generic [ref=f2e101]: Fashion
+          - heading "Everyday Running Shoes" [level=3] [ref=f2e102]
+          - paragraph [ref=f2e103]: Lightweight trainers with cushioned support for walks and daily runs.
+          - generic [ref=f2e104]:
+            - generic [ref=f2e105]:
+              - strong [ref=f2e106]: ₹2,199.00
+              - deletion [ref=f2e107]: ₹2,999.00
+            - button "Add" [ref=f2e108] [cursor=pointer]
+      - article [ref=f2e110]:
+        - generic [ref=f2e111]: Kitchen
+        - generic [ref=f2e112]:
+          - generic [ref=f2e113]: Kitchen
+          - heading "Ceramic Coffee Set" [level=3] [ref=f2e114]
+          - paragraph [ref=f2e115]: Four modern stoneware mugs with a calm matte finish.
+          - generic [ref=f2e116]:
+            - generic [ref=f2e117]:
+              - strong [ref=f2e118]: ₹899.00
+              - deletion [ref=f2e119]: ₹1,299.00
+            - button "Add" [ref=f2e120] [cursor=pointer]
+    - generic [ref=f2e121]:
+      - button "Previous" [disabled]
+      - generic [ref=f2e122]: 1 / 1
+      - button "Next" [disabled]
