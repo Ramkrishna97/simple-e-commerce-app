@@ -4,49 +4,53 @@
   publish = "dist/frontend/browser"
 
 # ==============================================================================
-# Netlify Free Tier API Redirects
+# Netlify API Proxy to Render Backend (Free Tier)
 # ------------------------------------------------------------------------------
-# Netlify Free Tier hosts the static Angular app.
-# If you deploy your backend Java Spring Boot services to a free backend host
-# (such as Render Free Tier, Railway, Koyeb, or Fly.io), uncomment and update
-# the proxy redirects below with your backend URL.
+# Proxies all frontend /api/* requests to your Render Free Tier backend service.
+# Replace 'simple-e-marketplace-backend' with your actual Render service name.
 # ==============================================================================
 
-# [[redirects]]
-#   from = "/api/auth/*"
-#   to = "https://your-free-backend.onrender.com/api/auth/:splat"
-#   status = 200
-#   force = true
+[[redirects]]
+  from = "/api/auth/*"
+  to = "https://simple-e-marketplace-backend.onrender.com/api/auth/:splat"
+  status = 200
+  force = true
 
-# [[redirects]]
-#   from = "/api/users/*"
-#   to = "https://your-free-backend.onrender.com/api/users/:splat"
-#   status = 200
-#   force = true
+[[redirects]]
+  from = "/api/users/*"
+  to = "https://simple-e-marketplace-backend.onrender.com/api/users/:splat"
+  status = 200
+  force = true
 
-# [[redirects]]
-#   from = "/api/products/*"
-#   to = "https://your-free-backend.onrender.com/api/products/:splat"
-#   status = 200
-#   force = true
+[[redirects]]
+  from = "/api/products/*"
+  to = "https://simple-e-marketplace-backend.onrender.com/api/products/:splat"
+  status = 200
+  force = true
 
-# [[redirects]]
-#   from = "/api/carts/*"
-#   to = "https://your-free-backend.onrender.com/api/carts/:splat"
-#   status = 200
-#   force = true
+[[redirects]]
+  from = "/api/sellers/*"
+  to = "https://simple-e-marketplace-backend.onrender.com/api/sellers/:splat"
+  status = 200
+  force = true
 
-# [[redirects]]
-#   from = "/api/orders/*"
-#   to = "https://your-free-backend.onrender.com/api/orders/:splat"
-#   status = 200
-#   force = true
+[[redirects]]
+  from = "/api/carts/*"
+  to = "https://simple-e-marketplace-backend.onrender.com/api/carts/:splat"
+  status = 200
+  force = true
 
-# [[redirects]]
-#   from = "/api/notifications/*"
-#   to = "https://your-free-backend.onrender.com/api/notifications/:splat"
-#   status = 200
-#   force = true
+[[redirects]]
+  from = "/api/orders/*"
+  to = "https://simple-e-marketplace-backend.onrender.com/api/orders/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/notifications/*"
+  to = "https://simple-e-marketplace-backend.onrender.com/api/notifications/:splat"
+  status = 200
+  force = true
 
 # SPA Single Page App Route Fallback
 [[redirects]]

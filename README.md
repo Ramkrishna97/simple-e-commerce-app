@@ -19,31 +19,27 @@ The single administrator account is `admin` / `qwertyuiop`. Registration exposes
 
 The auth service returns a temporary password only to simplify local development. Replace that response with an email provider before production. In production, place an API gateway in front of the user and product services and validate the JWT issued by auth-service before allowing account or seller changes.
 
-## Deploying the Frontend to Netlify
+## Free Tier Production Deployment (Netlify + Render)
 
-This project includes a [netlify.toml](file:///E:/Temp/Ai-playground/simple-e-marketplace/netlify.toml) configuration file in the root directory for deploying the Angular frontend to Netlify.
+This project is configured to run 100% on free tiers:
+- **Frontend:** Angular app deployed on **Netlify Free Tier**
+- **Backend:** All 6 Spring Boot microservices + Nginx reverse proxy bundled into a single low-memory Docker container deployed on **Render Free Tier (512 MB RAM)**.
 
-### Netlify Configuration (`netlify.toml`)
-- **Base directory:** `frontend`
-- **Build command:** `npm run build`
-- **Publish directory:** `dist/frontend/browser`
-- **Redirects:** Single Page Application (SPA) catch-all redirect configured to `index.html` (status 200).
+---
 
-### Deployment Steps:
-1. Push your repository to GitHub, GitLab, or Bitbucket.
-2. Log in to [Netlify](https://app.netlify.com/) and click **Add new site** -> **Import an existing project**.
-3. Connect your Git provider and select this repository.
-4. Netlify will automatically detect the `netlify.toml` file and pre-fill the build settings (`base`, `command`, `publish`).
-5. Click **Deploy site**.
+### Step 1: Deploy Backend to Render (Free Tier)
+1. Push your repository to GitHub or GitLab.
+2. Log in to [Render](https://dashboard.render.com/) and click **New +** -> **Blueprint**.
+3. Connect your repository. Render will automatically detect [render.yaml](file:///E:/Temp/Ai-playground/simple-e-marketplace/render.yaml) and build the Docker container using [Dockerfile](file:///E:/Temp/Ai-playground/simple-e-marketplace/Dockerfile).
+4. Render will generate a URL for your backend service (e.g., `https://simple-e-marketplace-backend.onrender.com`).
 
-> [!NOTE]
-> **Netlify Free Tier Limitation & Backend Hosting:**
-> Netlify Free Tier hosts static frontends and serverless Node functions only — it cannot run Java/Spring Boot JARs or Gradle background processes.
-> 
-> The Angular app dynamically resolves API URLs:
-> - **Local Development:** Routes to `http://localhost:808x` via `proxy.conf.json`.
-> - **Deployed Host (Netlify):** Routes requests relatively via `/api/*`.
-> 
-> To connect your Netlify frontend to live backends for free:
-> 1. Host your Spring Boot JARs or Docker containers on a free backend platform (such as [Render Free Tier](https://render.com/), [Railway](https://railway.app/), or [Koyeb](https://www.koyeb.com/)).
-> 2. Uncomment and update the `[[redirects]]` section in `netlify.toml` to proxy `/api/*` routes to your free backend URL.
+---
+
+### Step 2: Deploy Frontend to Netlify (Free Tier)
+1. In [netlify.toml](file:///E:/Temp/Ai-playground/simple-e-marketplace/netlify.toml), update the `to` URLs under `[[redirects]]` if your Render app name is different from `simple-e-marketplace-backend`.
+2. Log in to [Netlify](https://app.netlify.com/) and import your repository.
+3. Netlify will build the Angular site and automatically proxy all `/api/*` traffic seamlessly to your Render backend.
+
+> [!TIP]
+> **Low-Memory Optimization:**
+> Each Java Spring Boot microservice is launched in Docker with optimized JVM flags (`-Xmx64m -XX:+UseSerialGC -Xss256k -XX:TieredStopAtLevel=1`), using only ~350–400 MB RAM total. This ensures the backend runs cleanly within Render's 512 MB Free Tier limit without memory errors.
