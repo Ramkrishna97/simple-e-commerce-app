@@ -18,3 +18,23 @@ Double-click `start-all.bat` to build and start all services and the Angular das
 The single administrator account is `admin` / `qwertyuiop`. Registration exposes buyer and seller roles only.
 
 The auth service returns a temporary password only to simplify local development. Replace that response with an email provider before production. In production, place an API gateway in front of the user and product services and validate the JWT issued by auth-service before allowing account or seller changes.
+
+## Deploying the Frontend to Netlify
+
+This project includes a [netlify.toml](file:///E:/Temp/Ai-playground/simple-e-marketplace/netlify.toml) configuration file in the root directory for deploying the Angular frontend to Netlify.
+
+### Netlify Configuration (`netlify.toml`)
+- **Base directory:** `frontend`
+- **Build command:** `npm run build`
+- **Publish directory:** `dist/frontend/browser`
+- **Redirects:** Single Page Application (SPA) catch-all redirect configured to `index.html` (status 200).
+
+### Deployment Steps:
+1. Push your repository to GitHub, GitLab, or Bitbucket.
+2. Log in to [Netlify](https://app.netlify.com/) and click **Add new site** -> **Import an existing project**.
+3. Connect your Git provider and select this repository.
+4. Netlify will automatically detect the `netlify.toml` file and pre-fill the build settings (`base`, `command`, `publish`).
+5. Click **Deploy site**.
+
+> [!NOTE]
+> Because the backend consists of Spring Boot microservices (Auth, User, Product, Cart, Order, Notification services), they need to be hosted separately (e.g., Render, Railway, AWS, or Fly.io) if you want the deployed Netlify frontend to connect to production APIs instead of `localhost`.
