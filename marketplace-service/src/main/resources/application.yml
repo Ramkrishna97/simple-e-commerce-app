@@ -5,6 +5,10 @@ server:
       max: 16
       min-spare: 1
 spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
   application:
     name: marketplace-service
   datasource:
@@ -22,6 +26,7 @@ spring:
   jmx:
     enabled: false
 app:
+  storage-limit-bytes: ${STORAGE_LIMIT_BYTES:536870912}
   jwt-secret: ${JWT_SECRET:change-this-demo-secret-to-a-long-random-value-at-least-32-bytes}
   temporary-password-length: 10
   internal-api-key: ${INTERNAL_API_KEY:local-order-service-key-change-in-production}
