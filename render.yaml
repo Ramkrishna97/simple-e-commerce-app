@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: simple-e-marketplace-backend
+    name: simple-e-commerce-app
     runtime: docker
     plan: free
     region: oregon

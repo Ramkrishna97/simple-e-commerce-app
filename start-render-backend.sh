@@ -17,5 +17,16 @@ java $JAVA_OPTS -jar /app/cart-service.jar > /app/data/cart.log 2>&1 &
 java $JAVA_OPTS -jar /app/order-service.jar > /app/data/order.log 2>&1 &
 java $JAVA_OPTS -jar /app/notification-service.jar > /app/data/notification.log 2>&1 &
 
+# Keepalive & Frontend sync ping loop (every 10 minutes)
+# Keeps Render alive and pings Netlify frontend to ensure both are in sync
+FRONTEND_URL="${FRONTEND_URL:-https://simple-marketplace-e-com.netlify.app}"
+(
+  while true; do
+    sleep 600
+    echo "[keep-alive] Pinging frontend: $FRONTEND_URL"
+    curl -s -m 10 "$FRONTEND_URL" > /dev/null || true
+  done
+) &
+
 echo "Starting Nginx reverse proxy..."
 exec nginx -g "daemon off;"

@@ -27,7 +27,7 @@ RUN gradle bootJar --no-daemon -x test
 
 # Stage 2: Low-Memory Production Image for Render Free Tier
 FROM eclipse-temurin:17-jre-alpine
-RUN apk add --no-cache bash nginx
+RUN apk add --no-cache bash nginx curl
 
 WORKDIR /app
 

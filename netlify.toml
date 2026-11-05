@@ -7,13 +7,13 @@
 # Netlify API Proxy to Render Backend (Free Tier)
 # ------------------------------------------------------------------------------
 # Proxies ALL frontend /api/* requests to your Render Free Tier backend service.
-# NOTE: If your Render URL is different from 'simple-e-marketplace-backend.onrender.com',
+# NOTE: If your Render URL is different from 'simple-e-commerce-app.onrender.com',
 # update the URL target below.
 # ==============================================================================
 
 [[redirects]]
   from = "/api/*"
-  to = "https://simple-e-marketplace-backend.onrender.com/api/:splat"
+  to = "https://simple-e-commerce-app.onrender.com/api/:splat"
   status = 200
   force = true
 

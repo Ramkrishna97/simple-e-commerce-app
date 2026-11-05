@@ -1,0 +1,24 @@
+server:
+  port: 8086
+spring:
+  datasource:
+    url: jdbc:h2:file:./data/notificationdb;AUTO_SERVER=TRUE
+  jpa:
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true
+  kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers:localhost:9092}
+    consumer:
+      group-id: notification-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+app:
+  jwt-secret: change-this-demo-secret-to-a-long-random-value-at-least-32-bytes
+  notification-topic: marketplace.notifications
