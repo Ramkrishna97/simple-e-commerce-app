@@ -11,30 +11,29 @@ http {
     access_log /dev/stdout;
     error_log  /dev/stderr warn;
 
+    map $http_origin $cors_origin {
+        default "";
+        ~^https?://localhost(:[0-9]+)?$ $http_origin;
+        ~^https://simple-marketplace-e-com\.netlify\.app$ $http_origin;
+    }
+
     server {
         listen PORT_PLACEHOLDER;
 
-        # Direct CORS headers for browser requests reaching Render directly
-        set $cors_origin "";
-        if ($http_origin ~* "^(https?://localhost(:[0-9]+)?|https://simple-marketplace-e-com\.netlify\.app)$") {
-            set $cors_origin $http_origin;
-        }
+        add_header 'Access-Control-Allow-Origin' $cors_origin always;
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS, PATCH' always;
+        add_header 'Access-Control-Allow-Headers' 'Content-Type, Authorization' always;
+        add_header 'Access-Control-Allow-Credentials' 'true' always;
 
-        # Global preflight handler
         if ($request_method = 'OPTIONS') {
-            add_header 'Access-Control-Allow-Origin' '$cors_origin' always;
-            add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS, PATCH' always;
-            add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
-            add_header 'Access-Control-Allow-Credentials' 'true' always;
-            add_header 'Access-Control-Max-Age' 1728000 always;
-            add_header 'Content-Type' 'text/plain; charset=utf-8' always;
-            add_header 'Content-Length' 0 always;
             return 204;
         }
 
         location /health {
-            return 200 'OK';
-            add_header Content-Type text/plain;
+            proxy_pass http://127.0.0.1:8083/api/products?page=0;
+            proxy_set_header Host $host;
+            proxy_set_header Origin "";
+            proxy_set_header X-Forwarded-Proto $scheme;
         }
 
         location /api/auth {
@@ -45,8 +44,6 @@ http {
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
 
-            add_header 'Access-Control-Allow-Origin' '$cors_origin' always;
-            add_header 'Access-Control-Allow-Credentials' 'true' always;
         }
 
         location /api/users {
@@ -57,8 +54,6 @@ http {
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
 
-            add_header 'Access-Control-Allow-Origin' '$cors_origin' always;
-            add_header 'Access-Control-Allow-Credentials' 'true' always;
         }
 
         location /api/products {
@@ -69,8 +64,6 @@ http {
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
 
-            add_header 'Access-Control-Allow-Origin' '$cors_origin' always;
-            add_header 'Access-Control-Allow-Credentials' 'true' always;
         }
 
         location /api/sellers {
@@ -81,8 +74,6 @@ http {
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
 
-            add_header 'Access-Control-Allow-Origin' '$cors_origin' always;
-            add_header 'Access-Control-Allow-Credentials' 'true' always;
         }
 
         location /api/carts {
@@ -93,8 +84,6 @@ http {
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
 
-            add_header 'Access-Control-Allow-Origin' '$cors_origin' always;
-            add_header 'Access-Control-Allow-Credentials' 'true' always;
         }
 
         location /api/orders {
@@ -105,8 +94,6 @@ http {
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
 
-            add_header 'Access-Control-Allow-Origin' '$cors_origin' always;
-            add_header 'Access-Control-Allow-Credentials' 'true' always;
         }
 
         location /api/notifications {
@@ -117,13 +104,11 @@ http {
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
 
-            add_header 'Access-Control-Allow-Origin' '$cors_origin' always;
-            add_header 'Access-Control-Allow-Credentials' 'true' always;
         }
 
         location / {
+            default_type text/plain;
             return 200 'Simple E-Marketplace Microservices Backend Online';
-            add_header Content-Type text/plain;
         }
     }
 }
