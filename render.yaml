@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: simple-e-marketplace-backend
+    runtime: docker
+    plan: free
+    region: oregon
+    healthCheckPath: /health
