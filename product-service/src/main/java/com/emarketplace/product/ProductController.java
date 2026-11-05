@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-@RestController @RequestMapping("/api") @CrossOrigin(origins = "http://localhost:4200")
+@RestController @RequestMapping("/api") @CrossOrigin(origins = {"http://localhost:4200", "https://simple-marketplace-e-com.netlify.app"})
 public class ProductController {
     private final ProductRepository products; private final SellerRepository sellers; private final String internalApiKey;
     public ProductController(ProductRepository products,SellerRepository sellers,@Value("${app.internal-api-key}") String internalApiKey){this.products=products;this.sellers=sellers;this.internalApiKey=internalApiKey;}

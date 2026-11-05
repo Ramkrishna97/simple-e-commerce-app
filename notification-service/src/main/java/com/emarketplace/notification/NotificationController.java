@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-@RestController @RequestMapping("/api/notifications") @CrossOrigin(origins="http://localhost:4200")
+@RestController @RequestMapping("/api/notifications") @CrossOrigin(origins = {"http://localhost:4200", "https://simple-marketplace-e-com.netlify.app"})
 public class NotificationController {
     private final NotificationEvents events; private final NotificationRepository notifications; private final NotificationReceiptRepository receipts;
     public NotificationController(NotificationEvents events,NotificationRepository notifications,NotificationReceiptRepository receipts){this.events=events;this.notifications=notifications;this.receipts=receipts;}
