@@ -6,49 +6,14 @@
 # ==============================================================================
 # Netlify API Proxy to Render Backend (Free Tier)
 # ------------------------------------------------------------------------------
-# Proxies all frontend /api/* requests to your Render Free Tier backend service.
-# Replace 'simple-e-marketplace-backend' with your actual Render service name.
+# Proxies ALL frontend /api/* requests to your Render Free Tier backend service.
+# NOTE: If your Render URL is different from 'simple-e-marketplace-backend.onrender.com',
+# update the URL target below.
 # ==============================================================================
 
 [[redirects]]
-  from = "/api/auth/*"
-  to = "https://simple-e-marketplace-backend.onrender.com/api/auth/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/users/*"
-  to = "https://simple-e-marketplace-backend.onrender.com/api/users/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/products/*"
-  to = "https://simple-e-marketplace-backend.onrender.com/api/products/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/sellers/*"
-  to = "https://simple-e-marketplace-backend.onrender.com/api/sellers/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/carts/*"
-  to = "https://simple-e-marketplace-backend.onrender.com/api/carts/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/orders/*"
-  to = "https://simple-e-marketplace-backend.onrender.com/api/orders/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/notifications/*"
-  to = "https://simple-e-marketplace-backend.onrender.com/api/notifications/:splat"
+  from = "/api/*"
+  to = "https://simple-e-marketplace-backend.onrender.com/api/:splat"
   status = 200
   force = true
 
