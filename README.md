@@ -19,6 +19,27 @@ The single administrator account is `admin` / `qwertyuiop`. Registration exposes
 
 The auth service returns a temporary password only to simplify local development. Replace that response with an email provider before production. In production, place an API gateway in front of the user and product services and validate the JWT issued by auth-service before allowing account or seller changes.
 
+## Docker Backend Deployment
+
+### Running Backend with Docker Compose (Local or Server)
+You can build and run the entire backend microservices stack locally or on any server using Docker Compose:
+
+```bash
+# Build and start all 6 Spring Boot microservices + Nginx API Gateway
+docker compose up --build
+```
+
+The unified backend will start on port `8080`, exposing all microservice routes:
+- `/health` -> Backend status check
+- `/api/auth/*` -> Auth Service
+- `/api/users/*` -> User Service
+- `/api/products/*` & `/api/sellers/*` -> Product Service
+- `/api/carts/*` -> Cart Service
+- `/api/orders/*` -> Order Service
+- `/api/notifications/*` -> Notification Service
+
+---
+
 ## Free Tier Production Deployment (Netlify + Render)
 
 This project is configured to run 100% on free tiers:
