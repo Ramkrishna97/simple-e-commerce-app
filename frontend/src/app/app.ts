@@ -15,6 +15,7 @@ interface Notification { id:string; senderUsername:string; recipientUsername:str
 @Component({selector:'app-root',imports:[CommonModule,CurrencyPipe,FormsModule],templateUrl:'./app.html',styleUrl:'./app.css'})
 export class App implements OnInit {
   products:Product[]=[]; page=0; totalPages=0; view:'grid'|'list'='grid'; loading=true; error='';
+  serverWakingUp=false; retryCount=0;
   username=sessionStorage.getItem('username')||''; password=''; token=sessionStorage.getItem('token')||''; role=sessionStorage.getItem('role')||''; loginError='';
   showLogin=false; showRegistration=false; showCart=false; showOrders=false; showAccount=false; showNotifications=false;
   cartItems:CartItem[]=[]; orders:Order[]=[]; cartLoading=false; ordering=false; orderError=''; guestCartId=this.getOrCreateGuestCartId();
@@ -39,7 +40,28 @@ export class App implements OnInit {
 
   constructor(private readonly http:HttpClient,private readonly changes:ChangeDetectorRef){}
   ngOnInit():void{this.loadProducts();this.loadCart();if(this.token){this.loadOrders();this.loadNotifications();}}
-  loadProducts(page=this.page):void{this.loading=true;this.http.get<ProductPage>(`${this.productUrl}/products?page=${page}`).subscribe({next:r=>{this.products=r.content;this.page=r.number;this.totalPages=r.totalPages;this.error='';this.loading=false;this.changes.detectChanges();},error:()=>{this.error='Connecting to backend (Render free server is starting up, please wait a moment…)';this.loading=false;this.changes.detectChanges();setTimeout(()=>this.loadProducts(page),4000);}});}
+  loadProducts(page=this.page):void{
+    this.loading=true;
+    this.http.get<ProductPage>(`${this.productUrl}/products?page=${page}`).subscribe({
+      next:r=>{
+        this.products=r.content;
+        this.page=r.number;
+        this.totalPages=r.totalPages;
+        this.error='';
+        this.loading=false;
+        this.serverWakingUp=false;
+        this.retryCount=0;
+        this.changes.detectChanges();
+      },
+      error:()=>{
+        this.retryCount++;
+        this.serverWakingUp=true;
+        this.loading=true;
+        this.changes.detectChanges();
+        setTimeout(()=>this.loadProducts(page),4000);
+      }
+    });
+  }
   login():void{this.loginError='';this.http.post<{accessToken:string;role:string}>(`${this.authUrl}/login`,{username:this.username,password:this.password}).subscribe({next:r=>{this.token=r.accessToken;this.role=r.role;sessionStorage.setItem('username',this.username);sessionStorage.setItem('token',this.token);sessionStorage.setItem('role',this.role);this.password='';this.showLogin=false;this.mergeGuestCart();this.loadOrders();this.loadNotifications();this.changes.detectChanges();},error:()=>{this.loginError='Login failed. Check your credentials or backend connection.';this.changes.detectChanges();}});}
   createAccount():void{const r=this.registration;this.loginError='';this.http.post(`${this.authUrl}/register`,{username:r.username,email:r.email,password:r.password,role:r.role}).subscribe({next:()=>{const url=r.role==='SELLER'?`${this.productUrl}/sellers`:`${this.userUrl}`;this.http.post(url,r).subscribe({next:()=>{this.username=r.username;this.password=r.password;this.showRegistration=false;this.login();},error:()=>{this.loginError='Login was created, but the profile service is unavailable.';this.changes.detectChanges();}});},error:e=>{this.loginError=typeof e.error==='string'?e.error:'Could not create account.';this.changes.detectChanges();}});}
   openAccount():void{this.showAccount=true;this.accountMessage='';if(this.role==='ADMIN'){this.loadAdmin();return;}const url=this.role==='SELLER'?`${this.productUrl}/sellers/${encodeURIComponent(this.username)}`:`${this.userUrl}/${encodeURIComponent(this.username)}`;this.http.get<Profile>(url,{headers:this.authHeaders()}).subscribe({next:p=>{this.profile={...p,addresses:p.addresses||[]};if(this.role==='SELLER')this.loadSellerProducts();this.changes.detectChanges();},error:()=>{this.accountMessage='Profile could not be loaded.';this.changes.detectChanges();}});}
