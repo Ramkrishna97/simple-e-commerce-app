@@ -1,9 +1,9 @@
-# Stage 1: Build Java Spring Boot JARs
-FROM eclipse-temurin:17-jdk-alpine AS builder
+# Stage 1: Build Java Spring Boot JARs using official Gradle image
+FROM gradle:8.10.2-jdk17-alpine AS builder
 WORKDIR /build
 
-COPY gradle/ gradle/
-COPY gradlew gradlew.bat build.gradle settings.gradle ./
+# Copy build configuration files
+COPY build.gradle settings.gradle ./
 COPY auth-service/build.gradle auth-service/
 COPY user-service/build.gradle user-service/
 COPY product-service/build.gradle product-service/
@@ -11,9 +11,10 @@ COPY cart-service/build.gradle cart-service/
 COPY order-service/build.gradle order-service/
 COPY notification-service/build.gradle notification-service/
 
-RUN chmod +x ./gradlew
-RUN ./gradlew dependencies --no-daemon || true
+# Cache dependencies
+RUN gradle dependencies --no-daemon || true
 
+# Copy source code
 COPY auth-service/src auth-service/src
 COPY user-service/src user-service/src
 COPY product-service/src product-service/src
@@ -21,7 +22,8 @@ COPY cart-service/src cart-service/src
 COPY order-service/src order-service/src
 COPY notification-service/src notification-service/src
 
-RUN ./gradlew bootJar --no-daemon -x test
+# Build production bootJars
+RUN gradle bootJar --no-daemon -x test
 
 # Stage 2: Low-Memory Production Image for Render Free Tier
 FROM eclipse-temurin:17-jre-alpine
